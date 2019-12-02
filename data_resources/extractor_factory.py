@@ -1,7 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 
-from .product import Extractor, ImageFolderExtractor, VideoFileExtractor, S3VideoExtractor
+from .extractors import Extractor, ImageFolderExtractor, VideoFileExtractor, S3VideoExtractor
 
 logger = logging.getLogger(__name__)
 

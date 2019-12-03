@@ -1,4 +1,4 @@
-from .common import from_int, from_str
+from server.common import from_int, from_str
 from .request import *
 
 
@@ -20,7 +20,7 @@ class Cs550Request(RequestBase):
         return Cs550Request(
             request_id=request_id,
             userId=user_id,
-            #resource=create_resource(path=path), # TODO
+            # resource=create_resource(path=path), # TODO
             time_stamp=time_stamp, status=None
         )
 
@@ -32,7 +32,7 @@ class Cs550Request(RequestBase):
         """Sets the result and updates the status"""
         result_json = self._convert_result(result)
         self.result = result_json
-        # self.set_status(JobStatus.Done)
+        self.set_status(JobStatus.Done)
 
     def set_status(self, obj: JobStatus):
         self.status = obj

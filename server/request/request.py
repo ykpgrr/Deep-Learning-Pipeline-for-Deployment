@@ -1,13 +1,6 @@
 from abc import ABC, abstractmethod
-from enum import Enum
 
-
-class JobStatus(Enum):
-# TODO Add extra status
-    Accepted = 0
-    InProgress = 1
-    Done = 2
-    Failed = 3
+from server.common import JobStatus
 
 
 class RequestBase(ABC):

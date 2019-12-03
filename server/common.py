@@ -1,4 +1,13 @@
+from enum import Enum
 from typing import Any
+
+
+class JobStatus(Enum):
+    # TODO Add extra status
+    Accepted = 0
+    InProgress = 1
+    Done = 2
+    Failed = 3
 
 
 def from_int(x: Any) -> int:

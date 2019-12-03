@@ -4,8 +4,8 @@ import os
 from flask import Flask, jsonify, abort, request
 from gevent.pywsgi import WSGIServer
 
-from .requests.cs550_request import Cs550Request
-from .requests.request import JobStatus
+from server.request.cs550_request import Cs550Request
+from server.common import JobStatus
 
 logger = logging.getLogger(__name__)
 FLASK_CONFIG_PATH = os.getenv('FLASK_CONFIG_PATH', 'flask.cfg')

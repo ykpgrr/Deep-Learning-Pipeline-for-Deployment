@@ -21,7 +21,7 @@ class Model3Pipeline:
     def _create_queues(self):
         self.time_ref_queue = Queue()
 
-        self.orig_input_queue_for_p1 = Queue(maxsize=30)
+        self.orig_input_queue_for_p1 = Queue()
         self.orig_input_queue_for_p2 = Queue()
         self.orig_input_queue_for_p3 = Queue()
 
@@ -55,6 +55,7 @@ class Model3Pipeline:
         self.pipeline_model3_mediator = PipelineModel3Mediator(self.model1, self.model2, self.model3, self.preprocess1,
                                                                self.preprocess2, self.preprocess3)
 
+
     def preprocess1_run(self):
         print("preprocess1_run")
         self.preprocess1.run()
@@ -67,7 +68,7 @@ class Model3Pipeline:
         print("prediction_generator_run")
         """returns a generator that contains prediction results"""
         #for frame, time_ref in self._extractor.extract(resource):
-        for frame, time_ref in enumerate(range(5)):
+        for frame, time_ref in enumerate(range(10)):
             print("---adding frame ---")
             self.orig_input_queue_for_p1.put(frame)
             self.orig_input_queue_for_p2.put(frame)

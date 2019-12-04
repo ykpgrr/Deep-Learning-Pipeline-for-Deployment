@@ -1,5 +1,6 @@
+import threading
 from queue import Queue
-
+import time
 from .deeplearning_models import Model1, Model2, Model3
 from .mediator import PipelineModel3Mediator
 from .preprocess_models import Preprocess1, Preprocess2, Preprocess3
@@ -13,8 +14,8 @@ class Model3Pipeline:
     pose estimator that extracts the human poses for given bounding boxes
     """
 
-    def __init__(self, extractor):
-        self._extractor = extractor
+    def __init__(self):
+
         self._create_queues()
         self._create_models()
 
@@ -55,7 +56,6 @@ class Model3Pipeline:
         self.pipeline_model3_mediator = PipelineModel3Mediator(self.model1, self.model2, self.model3, self.preprocess1,
                                                                self.preprocess2, self.preprocess3)
 
-
     def preprocess1_run(self):
         print("preprocess1_run")
         self.preprocess1.run()
@@ -64,16 +64,33 @@ class Model3Pipeline:
         print("model1_run")
         self.model1.run()
 
-    def prediction_generator(self):
+    def prediction_generator(self, extractor, resource):
         print("prediction_generator_run")
         """returns a generator that contains prediction results"""
-        #for frame, time_ref in self._extractor.extract(resource):
-        for frame, time_ref in enumerate(range(10)):
+        for frame, time_ref in extractor.extract(resource):
             print("---adding frame ---")
             self.orig_input_queue_for_p1.put(frame)
             self.orig_input_queue_for_p2.put(frame)
             self.orig_input_queue_for_p3.put(frame)
             self.time_ref_queue.put(time_ref)
 
-    def get_extractor(self):
-        return self._extractor
+    def start(self, pipeline_input_queue, pipeline_output_queue):
+        while True:
+            print("*******pipeline while*******")
+            request = pipeline_input_queue.get()
+            print("-------pipeline getted queue---------")
+            generator_thread = threading.Thread(target=self.prediction_generator,
+                                                args=(request.extractor, request.resource,))
+            generator_thread.start()
+
+            time.sleep(1)
+            preprocess_thread = threading.Thread(target=self.preprocess1_run, args=())
+            preprocess_thread.start()
+
+            model_thread = threading.Thread(target=self.model1_run)
+            model_thread.start()
+
+            model_thread.join()
+            request.set_result_from_queue(self.time_ref_queue, self.model3_output_queue)
+            response = request.generate_response()
+            pipeline_output_queue.put(response)

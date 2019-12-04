@@ -4,15 +4,15 @@ import os
 from flask import Flask, jsonify, abort, request
 from gevent.pywsgi import WSGIServer
 
-from server.request.cs550_request import Cs550Request
 from server.common import JobStatus
+from server.request.cs550_request import Cs550Request
 
 logger = logging.getLogger(__name__)
-FLASK_CONFIG_PATH = os.getenv('FLASK_CONFIG_PATH', 'flask.cfg')
+FLASK_CONFIG_PATH = os.getenv('FLASK_CONFIG_PATH', '../flask.cfg')
 
 
-class WebServer:
-    def __init__(self, queue, result_queue):
+class RequestServer:
+    def __init__(self, request_queue):
         self.app = Flask(__name__)
         self.app.config.from_pyfile(FLASK_CONFIG_PATH)
         self.SECRET_KEY = self.app.config['SECRET_KEY']
@@ -22,7 +22,7 @@ class WebServer:
                               'cs550_request',
                               self.cs550_request,
                               methods=['POST'])
-        self.request_manager = RequestManager(queue, db, result_queue)
+        self.__request_queue = request_queue
 
     def _secret_key_check(self, req):
         if not (self.SECRET_KEY_KEY in req.headers) or req.headers.get(self.SECRET_KEY_KEY) != self.SECRET_KEY:
@@ -49,10 +49,10 @@ class WebServer:
 
         try:
             cs550_request = Cs550Request.from_dict(request.json)
+            self.__request_queue.put(cs550_request)
             response = {"requestId": request.json["requestId"],
                         "message": "successful",
                         "jobStatus": cs550_request.status.name}
-
         except:
             logger.exception(
                 f"The request is not correct in cs550_post_request. requestId:{request.json['requestId']}")

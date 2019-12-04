@@ -40,7 +40,7 @@ class ImageFolderExtractor(Extractor):
             yield cv2.imread(file), 0
 
 
-class VideoFileExtractor(Extractor):
+class VideoExtractor(Extractor):
     """
     Video file extractor from file system, returns related frame and time reference corresponding to given time interval
     """
@@ -50,7 +50,7 @@ class VideoFileExtractor(Extractor):
         self.resource_class = VideoFileResource
 
     def _extract(self, resource):
-        capture = cv2.VideoCapture(resource.video_path)
+        capture = cv2.VideoCapture(resource.source_path)
         if capture.isOpened():
             if resource.time_interval:
                 # jump to relevant "start msec"
@@ -62,7 +62,7 @@ class VideoFileExtractor(Extractor):
                     yield frame, format(current_msec / 1000, '.3f')
                     return
         else:
-            logger.info(f"Video Path Not Found: {resource.video_path}")
+            logger.info(f"Video Path Not Found: {resource.source_path}")
             return
 
         frame_number = 1
@@ -83,7 +83,8 @@ class VideoFileExtractor(Extractor):
                 if capture.get(cv2.CAP_PROP_POS_MSEC) > resource.time_interval.end * 1000:
                     break
 
-class S3VideoExtractor(VideoFileExtractor):
+
+class S3VideoExtractor(VideoExtractor):
     """ S3 Video file download and Process"""
 
     def __init__(self):

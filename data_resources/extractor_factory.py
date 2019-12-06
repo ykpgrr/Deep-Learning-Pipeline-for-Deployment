@@ -8,28 +8,28 @@ logger = logging.getLogger(__name__)
 
 class ExtractorFactory(ABC):
     @abstractmethod
-    def _createExtractor(self, extractorType: str) -> Extractor:
+    def _create_extractor(self, extractor_type: str) -> Extractor:
         pass
 
-    def createExtractor(self, extractorType: str):
+    def create_extractor(self, extractor_type: str):
         """returns a generator for images"""
         # self.check_resource_type(resource)
-        return self._createExtractor(extractorType)
+        return self._create_extractor(extractor_type)
 
 
 class ImageExtractorFactory(ExtractorFactory):
-    def _createExtractor(self, extractorType: str) -> Extractor:
-        if extractorType == "Local":
+    def _create_extractor(self, extractor_type: str) -> Extractor:
+        if extractor_type == "Local":
             return ImageFolderExtractor()
         else:
-            logger.error(f"There is no Extractor type like : {extractorType} in ImageExtractorFactory")
+            logger.error(f"There is no Extractor type like : {extractor_type} in ImageExtractorFactory")
 
 
 class VideoExtractorFactory(ExtractorFactory):
-    def _createExtractor(self, extractorType: str) -> Extractor:
-        if extractorType == "Local":
+    def _create_extractor(self, extractor_type: str) -> Extractor:
+        if extractor_type == "Local":
             return VideoExtractor()
-        elif extractorType == "S3":
+        elif extractor_type == "S3":
             return S3VideoExtractor()
         else:
-            logger.error(f"There is no Extractor type like : {extractorType} in VideoExtractorFactory")
+            logger.error(f"There is no Extractor type like : {extractor_type} in VideoExtractorFactory")

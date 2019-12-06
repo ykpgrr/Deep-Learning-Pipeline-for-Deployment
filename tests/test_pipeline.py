@@ -14,5 +14,3 @@ if __name__ == '__main__':
 
     model_thread = threading.Thread(target=p._deeplearning_models_run)
     model_thread.start()
-
-

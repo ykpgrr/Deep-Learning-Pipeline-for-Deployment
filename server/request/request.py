@@ -6,14 +6,16 @@ from server.common import JobStatus
 class RequestBase(ABC):
     """ Request base class"""
 
-    def __init__(self, request_id, time_stamp, extractor, resource):
+    def __init__(self, request_id, time_stamp, extractor, resource, analyse_type):
         self.request_id = request_id
         self.time_stamp = time_stamp
         self.extractor = extractor
         self.resource = resource
         self.status = JobStatus.Accepted
         self.result = None
+        self.analyse_type = analyse_type
 
+    @staticmethod
     @abstractmethod
     def from_dict(obj: dict):
         pass

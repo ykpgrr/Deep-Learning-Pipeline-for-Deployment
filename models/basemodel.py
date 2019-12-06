@@ -1,4 +1,4 @@
-from .mediator import Mediator
+from pipeline.mediator import Mediator
 
 
 class BaseModel:

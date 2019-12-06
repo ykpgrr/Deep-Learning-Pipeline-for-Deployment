@@ -1,6 +1,6 @@
 import logging
 import time
-from .basemodel import BaseModel
+from models.basemodel import BaseModel
 
 logger = logging.getLogger(__name__)
 """
@@ -26,14 +26,13 @@ class Model1(BaseModel):
                 break
             print(f"running model1 counter: {counter}")
             frame = self.input_queue.get()
-            print(f"getted model1")
             result = self.predict(frame)
             time.sleep(1)
             counter = counter + 1
             self.output_queue.put(result)
 
     def predict(self, frame):
-        return "a"
+        return "Model1Result"
 
 
 class Model2(BaseModel):
@@ -53,14 +52,13 @@ class Model2(BaseModel):
                 break
             print(f"running model2 counter: {counter}")
             frame = self.input_queue.get()
-            print(f"getted model2")
             result = self.predict(frame)
             time.sleep(1)
             counter = counter + 1
             self.output_queue.put(result)
 
     def predict(self, frame):
-        return "a"
+        return "Model2Result"
 
 
 class Model3(BaseModel):
@@ -80,11 +78,10 @@ class Model3(BaseModel):
                 break
             print(f"running model3 counter: {counter}")
             frame = self.input_queue.get()
-            print(f"getted model3")
             result = self.predict(frame)
             time.sleep(1)
             counter = counter + 1
             self.output_queue.put(result)
 
     def predict(self, frame):
-        return "a"
+        return "Model3Result"

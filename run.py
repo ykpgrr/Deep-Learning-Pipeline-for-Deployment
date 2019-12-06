@@ -6,7 +6,7 @@ from queue import Queue
 
 from pyhocon import ConfigFactory
 
-from manager.pipeline.pipeline import Model3Pipeline
+from pipeline.three_model.pipeline import Model3Pipeline
 from manager.response_manager import ResponseManager
 from server.request_server import RequestServer
 
@@ -40,6 +40,7 @@ def start_request_server(request_queue):
 
 def start_pipeline(pipeline_input_queue, pipeline_output_queue):
     pipeline = Model3Pipeline()
+    pipeline.prepare()
     pipeline.start(pipeline_input_queue, pipeline_output_queue)
 
 

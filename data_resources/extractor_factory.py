@@ -7,18 +7,14 @@ logger = logging.getLogger(__name__)
 
 
 class ExtractorFactory(ABC):
-    @abstractmethod
-    def _create_extractor(self, extractor_type: str) -> Extractor:
-        pass
 
+    @abstractmethod
     def create_extractor(self, extractor_type: str):
-        """returns a generator for images"""
-        # self.check_resource_type(resource)
-        return self._create_extractor(extractor_type)
+        pass
 
 
 class ImageExtractorFactory(ExtractorFactory):
-    def _create_extractor(self, extractor_type: str) -> Extractor:
+    def create_extractor(self, extractor_type: str) -> Extractor:
         if extractor_type == "Local":
             return ImageFolderExtractor()
         else:
@@ -26,7 +22,7 @@ class ImageExtractorFactory(ExtractorFactory):
 
 
 class VideoExtractorFactory(ExtractorFactory):
-    def _create_extractor(self, extractor_type: str) -> Extractor:
+    def create_extractor(self, extractor_type: str) -> Extractor:
         if extractor_type == "Local":
             return VideoExtractor()
         elif extractor_type == "S3":

@@ -1,7 +1,9 @@
+from abc import ABC, abstractmethod
+
 from pipeline.mediator import Mediator
 
 
-class BaseModel:
+class BaseModel(ABC):
     """
     The Base Component provides the basic functionality of storing a mediator's
     instance inside component objects.
@@ -17,3 +19,7 @@ class BaseModel:
     @mediator.setter
     def mediator(self, mediator: Mediator) -> None:
         self._mediator = mediator
+
+    @abstractmethod
+    def run(self):
+        pass

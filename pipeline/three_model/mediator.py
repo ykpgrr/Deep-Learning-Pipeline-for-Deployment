@@ -1,15 +1,15 @@
 import logging
 
+from models.deeplearning_models import Model1, Model2, Model3
+from models.preprocess_models import Preprocess1, Preprocess2, Preprocess3
 from pipeline.mediator import Mediator
 
-# from .deeplearning_models import Model1, Model2, Model3
-# from .preprocess_models import Preprocess1, Preprocess2, Preprocess3
 logger = logging.getLogger(__name__)
 
 
 class PipelineModel3Mediator(Mediator):
-    def __init__(self, model1, model2, model3,
-                 preprocess1, preprocess2, preprocess3) -> None:
+    def __init__(self, model1: Model1, model2: Model2, model3: Model3,
+                 preprocess1: Preprocess1, preprocess2: Preprocess2, preprocess3: Preprocess3) -> None:
         self._model1 = model1
         self._model1.mediator = self
         self._model2 = model2

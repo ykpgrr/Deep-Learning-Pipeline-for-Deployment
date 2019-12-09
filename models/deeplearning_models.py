@@ -17,12 +17,12 @@ class Model1(BaseModel):
         self.output_queue = output_queue
 
     def run(self) -> None:
-        logger.info("Model 1 is running")
+        logger.info("Model1 is running")
         counter = 0
         while True:
             if self.input_queue.empty() and counter != 0:
                 counter = 0
-                print("model1complete")
+                print("Model1Completed")
                 self.mediator.notify(self, "Model1Completed")
                 break
             print(f"running model1 counter: {counter}")
@@ -43,12 +43,12 @@ class Model2(BaseModel):
         self.output_queue = output_queue
 
     def run(self) -> None:
-        logger.info("Model 2 is running")
+        logger.info("Model2 is running")
         counter = 0
         while True:
             if self.input_queue.empty() and counter != 0:
                 counter = 0
-                print("model2complete")
+                print("Model2Completed")
                 self.mediator.notify(self, "Model2Completed")
                 break
             print(f"running model2 counter: {counter}")
@@ -69,12 +69,12 @@ class Model3(BaseModel):
         self.output_queue = output_queue
 
     def run(self) -> None:
-        logger.info("Model 3 is running")
+        logger.info("Model3 is running")
         counter = 0
         while True:
             if self.input_queue.empty() and counter != 0:
                 counter = 0
-                print("model3complete")
+                print("Model3Completed")
                 self.mediator.notify(self, "Model3Completed")
                 break
             print(f"running model3 counter: {counter}")

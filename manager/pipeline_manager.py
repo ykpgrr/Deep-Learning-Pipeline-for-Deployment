@@ -25,5 +25,8 @@ class PipelineManager:
             print("-------Pipeline Manager is running---------")
             self._current_pipeline = self.pipeline_factory.create_pipeline(request.analyse_type, self._current_pipeline)
             self._current_pipeline.start(request)
+            print("pipeline finished")
             response = request.generate_response()
+            print("response  generated")
             pipeline_output_queue.put(response)
+            print("queue putted")

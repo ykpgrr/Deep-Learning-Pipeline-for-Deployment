@@ -33,7 +33,6 @@ class PipelineModel3Mediator(Mediator):
             self._model3.run()
         elif event == "Model3Completed":
             logger.info("PipelineMediator reacts 'Model3Completed' and triggers the responseServer")
-            # self._model3.run() # TODO
         elif event == "Preprocess1Completed":
             logger.info("PipelineMediator reacts 'Preprocess1Completed' and triggers the Model2")
             self._preprocess2.run()
@@ -42,4 +41,3 @@ class PipelineModel3Mediator(Mediator):
             self._preprocess3.run()
         elif event == "Preprocess3Completed":
             logger.info("PipelineMediator reacts 'Preprocess3Completed' and triggers the responseServer")
-            # self._preprocess3.run() #TODO

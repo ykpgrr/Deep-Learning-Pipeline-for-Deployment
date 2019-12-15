@@ -62,7 +62,7 @@ class RequestServer:
 
         return jsonify(response), 201
 
-    def run_server(self):
+    def run(self):
         # self.app.run(host=self.app.config['HOST'], port=self.app.config['PORT'])
         # Serve the app with gevent
         http_server = WSGIServer((self.app.config['HOST'], self.app.config['PORT']), self.app)

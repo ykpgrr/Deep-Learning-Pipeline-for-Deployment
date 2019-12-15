@@ -9,8 +9,8 @@ from .request import *
 class Cs550Request(RequestBase):
     """ analysis for Cs550 example use case"""
 
-    def __init__(self, request_id, user_id, time_stamp, extractor, resource):
-        super().__init__(request_id, time_stamp, extractor, resource)
+    def __init__(self, request_id, user_id, time_stamp, extractor, resource, analyse_type):
+        super().__init__(request_id, time_stamp, extractor, resource, analyse_type)
         self.user_id = user_id
 
     @staticmethod
@@ -22,20 +22,21 @@ class Cs550Request(RequestBase):
         time_interval = Interval.from_dict(obj.get("interval"))
         source = from_str(obj.get("source"))
         path = from_str(obj.get("path"))
+        analyse_type = from_str(obj.get("analyse_type"))
 
         factory_type, resource_type = source.split('/')
         if factory_type == "Video":
             if resource_type == "Local":
-                extractor = VideoExtractorFactory().createExtractor(resource_type)
+                extractor = VideoExtractorFactory().create_extractor(resource_type)
                 resource = VideoFileResource(path, time_interval)
             elif resource_type == "S3":
-                extractor = VideoExtractorFactory().createExtractor(resource_type)
+                extractor = VideoExtractorFactory().create_extractor(resource_type)
                 resource = S3VideoResource(path, time_interval)
             else:
                 raise NotImplementedError
         elif factory_type == "Image":
             if resource_type == "Local":
-                extractor = ImageExtractorFactory().createExtractor(resource_type)
+                extractor = ImageExtractorFactory().create_extractor(resource_type)
                 resource = ImageFolderResource(path)
             else:
                 raise NotImplementedError
@@ -45,7 +46,8 @@ class Cs550Request(RequestBase):
             user_id=user_id,
             time_stamp=time_stamp,
             extractor=extractor,
-            resource=resource
+            resource=resource,
+            analyse_type=analyse_type
         )
 
     def _convert_result(self, time_ref_queue, result_queue):

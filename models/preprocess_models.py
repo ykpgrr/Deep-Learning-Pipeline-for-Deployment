@@ -67,7 +67,7 @@ class Preprocess3(BaseModel):
         self.output_queue = output_queue
 
     def run(self) -> None:
-        logger.info("Preprocess3is running")
+        logger.info("Preprocess3 is running")
         counter = 0
         while True:
             if self.input_queue.empty() and self.orig_queue.empty() and counter != 0:

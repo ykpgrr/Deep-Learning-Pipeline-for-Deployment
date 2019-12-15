@@ -6,7 +6,8 @@ from queue import Queue
 
 from pyhocon import ConfigFactory
 
-from pipeline.three_model.pipeline import Model3Pipeline
+# from pipeline.three_model.pipeline import Model3Pipeline
+from manager.pipeline_manager import PipelineManager
 from manager.response_manager import ResponseManager
 from server.request_server import RequestServer
 
@@ -35,13 +36,12 @@ logger.setLevel(logging.DEBUG)
 
 def start_request_server(request_queue):
     flask_server = RequestServer(request_queue)
-    flask_server.run_server()
+    flask_server.run()
 
 
 def start_pipeline(pipeline_input_queue, pipeline_output_queue):
-    pipeline = Model3Pipeline()
-    pipeline.prepare()
-    pipeline.start(pipeline_input_queue, pipeline_output_queue)
+    pipeline = PipelineManager()
+    pipeline.run(pipeline_input_queue, pipeline_output_queue)
 
 
 def start_response_server(response_queue):

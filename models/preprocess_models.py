@@ -1,6 +1,6 @@
 import logging
 
-from .basemodel import BaseModel
+from models.basemodel import BaseModel
 
 logger = logging.getLogger(__name__)
 """
@@ -25,13 +25,12 @@ class Preprocess1(BaseModel):
                 break
             print(f"running preprocess1 counter: {counter}")
             frame = self.input_queue.get()
-            print(f"getted preprocess1")
             result = self.preprocess(frame)
             counter = counter + 1
             self.output_queue.put(result)
 
     def preprocess(self, frame):
-        return "a"
+        return "Preprocess1Result"
 
 
 class Preprocess2(BaseModel):
@@ -52,13 +51,12 @@ class Preprocess2(BaseModel):
             print(f"running preprocess2 counter: {counter}")
             frame = self.orig_queue.get()
             frame = self.input_queue.get()
-            print(f"getted preprocess2")
             counter = counter + 1
             result = self.preprocess(frame)
             self.output_queue.put(result)
 
     def preprocess(self, frame):
-        return "a"
+        return "Preprocess2Result"
 
 
 class Preprocess3(BaseModel):
@@ -79,10 +77,9 @@ class Preprocess3(BaseModel):
             print(f"running preprocess3 counter: {counter}")
             frame = self.orig_queue.get()
             frame = self.input_queue.get()
-            print(f"getted preprocess3")
             counter = counter + 1
             result = self.preprocess(frame)
             self.output_queue.put(result)
 
     def preprocess(self, frame):
-        return "a"
+        return "Preproces3Result"

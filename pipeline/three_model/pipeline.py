@@ -1,11 +1,13 @@
+import threading
 from queue import Queue
-
-from .deeplearning_models import Model1, Model2, Model3
+import time
+from pipeline.pipeline import Pipeline
+from models.deeplearning_models import Model1, Model2, Model3
 from .mediator import PipelineModel3Mediator
-from .preprocess_models import Preprocess1, Preprocess2, Preprocess3
+from models.preprocess_models import Preprocess1, Preprocess2, Preprocess3
 
 
-class Model3Pipeline:
+class Model3Pipeline(Pipeline):
     """Defines a pose estimation pipeline that extracts images from resources and gives pose estimation results
     pipeline consists of 3 major components:
     extractor that is an instance of Extractor class that can extract images or sequence of images from a Resource
@@ -13,10 +15,13 @@ class Model3Pipeline:
     pose estimator that extracts the human poses for given bounding boxes
     """
 
-    def __init__(self, extractor):
-        self._extractor = extractor
+    def __init__(self):
+        pass
+
+    def prepare(self):
         self._create_queues()
         self._create_models()
+        # self._prepare_deep_learning_models() # to initialize models on GPU
 
     def _create_queues(self):
         self.time_ref_queue = Queue()
@@ -55,25 +60,41 @@ class Model3Pipeline:
         self.pipeline_model3_mediator = PipelineModel3Mediator(self.model1, self.model2, self.model3, self.preprocess1,
                                                                self.preprocess2, self.preprocess3)
 
-
-    def preprocess1_run(self):
-        print("preprocess1_run")
+    def _preprocess_models_run(self):
+        print("Preprocess models started to run")
         self.preprocess1.run()
 
-    def model1_run(self):
-        print("model1_run")
+    def _deeplearning_models_run(self):
+        print("Deep Learning models started to run")
         self.model1.run()
 
-    def prediction_generator(self):
+    def _source_extractor_run(self, extractor, resource):
         print("prediction_generator_run")
         """returns a generator that contains prediction results"""
-        #for frame, time_ref in self._extractor.extract(resource):
-        for frame, time_ref in enumerate(range(10)):
+        for frame, time_ref in extractor.extract(resource):
             print("---adding frame ---")
             self.orig_input_queue_for_p1.put(frame)
             self.orig_input_queue_for_p2.put(frame)
             self.orig_input_queue_for_p3.put(frame)
             self.time_ref_queue.put(time_ref)
 
-    def get_extractor(self):
-        return self._extractor
+    def start(self, pipeline_input_queue, pipeline_output_queue):
+        while True:
+            print("*******pipeline Waiting an item to run*******")
+            request = pipeline_input_queue.get()
+            print("-------pipeline is running---------")
+            generator_thread = threading.Thread(target=self._source_extractor_run,
+                                                args=(request.extractor, request.resource,))
+            generator_thread.start()
+
+            time.sleep(1)
+            preprocess_thread = threading.Thread(target=self._preprocess_models_run, args=())
+            preprocess_thread.start()
+
+            model_thread = threading.Thread(target=self._deeplearning_models_run)
+            model_thread.start()
+
+            model_thread.join()
+            request.set_result_from_queue(self.time_ref_queue, self.model3_output_queue)
+            response = request.generate_response()
+            pipeline_output_queue.put(response)

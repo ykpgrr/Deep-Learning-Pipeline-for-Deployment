@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 class PipelineManager:
-    """Related DL pipeline runner from queues"""
+    """Related DL pipeline manager from queues"""
     DEFAULT_PIPELINE_NAME = "three_model"
 
     def __init__(self):

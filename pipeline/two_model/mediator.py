@@ -8,6 +8,12 @@ logger = logging.getLogger(__name__)
 
 
 class PipelineModel2Mediator(Mediator):
+    """
+    The PipelineModel2Mediator interface declares a method used by models in Model2Pipeline to notify the
+    mediator about various events. The Mediator may react to these events and
+    pass the execution to other models.
+    """
+
     def __init__(self, model1: Model1, model2: Model2,
                  preprocess1: Preprocess1, preprocess2: Preprocess2) -> None:
         self._model1 = model1

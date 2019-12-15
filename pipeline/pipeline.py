@@ -8,7 +8,7 @@ from models.preprocess_models import Preprocess1
 from pipeline.mediator import Mediator
 
 
-class Pipeline():
+class Pipeline:
     """Defines a analyse_type that extracts images from resources and gives DL Models results
     analyse_type consists of 3 major components:
     extractor that is an instance of Extractor class that can extract images or sequence of images from a Resource
@@ -18,7 +18,7 @@ class Pipeline():
 
     def start(self, request):
         """
-        template method
+        template method. Start the Pipeline.
         :param request: incoming request
         :return: None
         """
@@ -40,7 +40,7 @@ class Pipeline():
 
     def prepare(self):
         """
-        template method
+        template method. Prepare the Pipeline like creating queues, models or loading GPU
         :return: None
         """
         self._create_queues()
@@ -81,6 +81,10 @@ class Pipeline():
 
     @abstractmethod
     def _prepare_deep_learning_models(self):
+        """
+        Model's weights loading on GPU
+        :return: None
+        """  # TODO
         pass
 
     @abstractmethod

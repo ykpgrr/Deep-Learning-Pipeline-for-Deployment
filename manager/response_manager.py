@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class ResponseManager:
-    """Related ML result runner from queues"""
+    """Related ML result manager from queues"""
 
     def __init__(self, url_cs550_post,
                  secret_key,

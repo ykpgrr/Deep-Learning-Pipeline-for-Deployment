@@ -51,7 +51,7 @@ class Model3Pipeline(Pipeline):
         """
         Model's weights loading on GPU
         :return: None
-        """
+        """  # TODO
         pass
 
     def _source_extractor_run(self, extractor, resource):

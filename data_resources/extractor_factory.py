@@ -7,6 +7,11 @@ logger = logging.getLogger(__name__)
 
 
 class ExtractorFactory(ABC):
+    """
+    The ExtractorFactory class declares the factory method that is supposed to return an
+    object of a Extractor class. The ExtractorFactory's subclasses usually provide the
+    implementation of this create_extractor method.
+    """
 
     @abstractmethod
     def create_extractor(self, extractor_type: str):

@@ -4,15 +4,12 @@ import threading
 from logging.handlers import TimedRotatingFileHandler
 from queue import Queue
 
-from pyhocon import ConfigFactory
-
-# from pipeline.three_model.pipeline import Model3Pipeline
+from config import Config
 from manager.pipeline_manager import PipelineManager
 from manager.response_manager import ResponseManager
 from server.request_server import RequestServer
 
-APP_CONFIG_PATH = os.getenv('APP_CONFIG_PATH', 'app.conf')
-app_config = ConfigFactory.parse_file(APP_CONFIG_PATH)
+app_config = Config().get_app_config()
 response_server_config = app_config['response_server']
 
 # Set the Log Directory

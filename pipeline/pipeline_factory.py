@@ -24,12 +24,18 @@ class PipelineFactory:
         if current_pipeline is not None and pipeline_type == current_pipeline.name:
             return current_pipeline
         elif pipeline_type == "three_model":
-            pipeline = Model3Pipeline()
-            pipeline.prepare()
-            return pipeline
+            return self._create_model3_pipeline()
         elif pipeline_type == "two_model":
-            pipeline = Model2Pipeline()
-            pipeline.prepare()
-            return pipeline
+            return self._create_model2_pipeline()
         else:
-            raise NotImplementedError
+            raise ValueError(pipeline_type)
+
+    def _create_model3_pipeline(self):
+        pipeline = Model3Pipeline()
+        pipeline.prepare()
+        return pipeline
+
+    def _create_model2_pipeline(self):
+        pipeline = Model2Pipeline()
+        pipeline.prepare()
+        return pipeline

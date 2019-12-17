@@ -1,5 +1,6 @@
 import glob
 import logging
+import os
 from abc import ABC, abstractmethod
 
 import cv2
@@ -36,7 +37,7 @@ class ImageFolderExtractor(Extractor):
         self.resource_class = ImageFolderResource
 
     def _extract(self, resource):
-        for file in glob.glob(resource.file_path):
+        for file in glob.glob(os.path.join(resource.source_path, "*")):
             yield cv2.imread(file), 0
 
 

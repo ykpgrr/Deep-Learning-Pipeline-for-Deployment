@@ -1,8 +1,7 @@
-package communicationStrategy;
-
 import org.json.simple.JSONObject;
 
 public class RequestBuilder {
+    private RequestInfo requestInfo;
     private JSONObject request;
 
     public RequestBuilder() {

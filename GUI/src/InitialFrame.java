@@ -19,6 +19,7 @@ public class InitialFrame extends JFrame {
         tabbedPane.addTab("Create Request", requestPanel);
         add(tabbedPane, BorderLayout.CENTER);
         setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     public static InitialFrame getInstance() {

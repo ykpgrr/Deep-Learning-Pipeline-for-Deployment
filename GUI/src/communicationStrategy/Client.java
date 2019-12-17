@@ -1,5 +1,3 @@
-package communicationStrategy;
-
 import org.apache.http.HttpClientConnection;
 import org.apache.http.client.HttpClient;
 import org.apache.http.params.HttpParams;

@@ -1,4 +1,4 @@
-import communicationStrategy.Types;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -42,7 +42,8 @@ public class RequestPanel extends JPanel implements ActionListener {
         mainPanel.add(userIdTextField);
 
         mainPanel.add(new JLabel("Source Type:"));
-        sourceTypeComboBox = new JComboBox(Types.values());
+        RequestStrategy[] strategies = {new LocalVideoFileStrategy(), new S3VideoStrategy(), new LocalImageFolderStrategy()};
+        sourceTypeComboBox = new JComboBox(strategies);
         sourceTypeComboBox.setSelectedIndex(-1);
         sourceTypeComboBox.addActionListener(this);
         mainPanel.add(sourceTypeComboBox);
@@ -77,37 +78,32 @@ public class RequestPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == requestButton && checkFields()) {
+        if (e.getSource() == requestButton && checkFields()) {
 
-            ResponsePanel responsePanel = new ResponsePanel((Types) sourceTypeComboBox.getSelectedItem());
+            int requestID = Integer.parseInt(getRequestIdLabel().getText());
+            String userID = getUserIdTextField().getText();
+            String source = ((RequestStrategy) sourceTypeComboBox.getSelectedItem()).getSourceType();
+            String analyseType = getAnalyzeType();
+            float[] interval = getInterval();
+            float start = interval[0];
+            float end = interval[1];
+            String path = getAddressLabel().getText();
+            int ts = (int) System.currentTimeMillis();
+            RequestInfo info = new RequestInfo(requestID, userID, source, analyseType, start, end, path, ts);
+            RequestStrategy strategy = (RequestStrategy) sourceTypeComboBox.getSelectedItem();
+            strategy.setInfo(info);
+            ResponsePanel responsePanel = new ResponsePanel(strategy.getRequest(), info);
             InitialFrame.getInstance().getTabbedPane().addTab(("" + responsePanel.getRequestID()), responsePanel);
             requestIdLabel.setText("" + (Integer.parseInt(requestIdLabel.getText()) + 1));
             InitialFrame.getInstance().getTabbedPane().updateUI();
         }
 
-        if(e.getSource() == sourceTypeComboBox) {
-            Types type = (Types) sourceTypeComboBox.getSelectedItem();
-            String address = "";
-            switch (type) {
-                case LocalVideo:
-                    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                    if(fileChooser.showOpenDialog(mainPanel)== JFileChooser.APPROVE_OPTION){
-                        address = fileChooser.getSelectedFile().toString();
-                        addressLabel.setText(address);
-                        mainPanel.updateUI();
-                    }
-                case S3Video:
-                    break;
-                case LocalImageFolder:
-                    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                    if(fileChooser.showOpenDialog(mainPanel)== JFileChooser.APPROVE_OPTION){
-                        address = fileChooser.getSelectedFile().toString();
-                        addressLabel.setText(address);
-                        mainPanel.updateUI();
-                    }
-                default:
-                    break;
-            }
+        if (e.getSource() == sourceTypeComboBox) {
+            RequestStrategy strategy = (RequestStrategy) sourceTypeComboBox.getSelectedItem();
+            String address = strategy.getAddress();
+            if (address != null)
+                addressLabel.setText(address);
+
         }
     }
 

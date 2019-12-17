@@ -1,7 +1,6 @@
 import datetime
 
-from data_resources.extractor_factory import ImageExtractorFactory, VideoExtractorFactory
-from data_resources.resource import VideoFileResource, ImageFolderResource, S3VideoResource
+from data_resources.data_resource_factory import ImageResourceFactory, VideoResourceFactory
 from server.common import from_int, from_str, Interval
 from .request import *
 
@@ -26,20 +25,11 @@ class Cs550Request(RequestBase):
 
         factory_type, resource_type = source.split('/')
         if factory_type == "Video":
-            if resource_type == "Local":
-                extractor = VideoExtractorFactory().create_extractor(resource_type)
-                resource = VideoFileResource(path, time_interval)
-            elif resource_type == "S3":
-                extractor = VideoExtractorFactory().create_extractor(resource_type)
-                resource = S3VideoResource(path, time_interval)
-            else:
-                raise NotImplementedError
+            extractor, resource = VideoResourceFactory().create_extractor(resource_type, path, time_interval)
         elif factory_type == "Image":
-            if resource_type == "Local":
-                extractor = ImageExtractorFactory().create_extractor(resource_type)
-                resource = ImageFolderResource(path)
-            else:
-                raise NotImplementedError
+            extractor, resource = ImageResourceFactory().create_extractor(resource_type, path)
+        else:
+            raise ValueError(factory_type)
 
         return Cs550Request(
             request_id=request_id,

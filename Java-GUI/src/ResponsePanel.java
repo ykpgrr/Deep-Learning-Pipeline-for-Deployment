@@ -6,33 +6,28 @@ import org.json.simple.JSONObject;
 import javax.swing.*;
 
 public class ResponsePanel extends JPanel {
-    private Types type;
     private String userID, source, path, analyseType;
     private int requestID, ts;
     private float start, end;
-
-    private Thread thread;
     private JSONObject response;
 
     public ResponsePanel(Types type) {
-        this.type = type;
         path = RequestPanel.getInstance().getAddressLabel().getText();
-        float[] interval = RequestPanel.getInstance().getInterval();
-
-        start = interval[0];
-        end = interval[1];
         analyseType = RequestPanel.getInstance().getAnalyzeType();
+        source = getSourceType(type);
         requestID = Integer.parseInt(RequestPanel.getInstance().getRequestIdLabel().getText());
         userID = RequestPanel.getInstance().getUserTextfield().getText();
         ts = (int)System.currentTimeMillis();
-        source = getAnalyseType(type);
+        float[] interval = RequestPanel.getInstance().getInterval();
+        start = interval[0];
+        end = interval[1];
 
         sendRequest();
 
         // TODO Display the response
     }
 
-    private static String getAnalyseType(Types type) {
+    private static String getSourceType(Types type) {
         switch (type) {
             case LocalImageFolder:
                 return "Image" + (char)(47) + "Local";
@@ -41,7 +36,6 @@ public class ResponsePanel extends JPanel {
             case S3Video:
                 return "Video" + (char)(47) + "S3";
         }
-
         return "";
     }
 
@@ -53,14 +47,11 @@ public class ResponsePanel extends JPanel {
                 Client client = new Client(request);
                 response = client.sendRequest();
 
-
                 JOptionPane.showMessageDialog(null, response.toJSONString());
             }
         };
-
-        thread = new Thread(run);
+        Thread thread = new Thread(run);
         thread.start();
-
     }
 
     public int getRequestID() {

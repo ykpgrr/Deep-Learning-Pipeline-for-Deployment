@@ -19,7 +19,6 @@ public class RequestPanel extends JPanel implements ActionListener {
     private JTextField userTextfield;
     private JLabel requestIdLabel;
 
-
     public static RequestPanel getInstance() {
         if (instance == null)
             instance = new RequestPanel();
@@ -43,12 +42,10 @@ public class RequestPanel extends JPanel implements ActionListener {
         userTextfield = new JTextField();
         mainPanel.add(userTextfield);
 
-
         mainPanel.add(new JLabel("Request Type:"));
         requestTypeComboBox = new JComboBox(Types.values());
         requestTypeComboBox.setSelectedIndex(-1);
         requestTypeComboBox.addActionListener(this);
-
         mainPanel.add(requestTypeComboBox);
 
         mainPanel.add(new JLabel("Analyze Type:"));
@@ -61,7 +58,6 @@ public class RequestPanel extends JPanel implements ActionListener {
         mainPanel.add(new JLabel("Interval"));
         start = new NumberField(false, true);
         end = new NumberField(false, true);
-
         JPanel textFieldPanel = new JPanel();
         textFieldPanel.setLayout(new GridLayout(1, 4));
         textFieldPanel.add(new JLabel("start"));
@@ -69,7 +65,6 @@ public class RequestPanel extends JPanel implements ActionListener {
         textFieldPanel.add(new JLabel("end"));
         textFieldPanel.add(end);
         mainPanel.add(textFieldPanel);
-
 
         addressLabel = new JLabel("Address");
         requestButton = new JButton("Request");
@@ -79,16 +74,6 @@ public class RequestPanel extends JPanel implements ActionListener {
 
         setLayout(new BorderLayout());
         add(mainPanel, BorderLayout.NORTH);
-    }
-
-    public JLabel getAddressLabel() {
-        return addressLabel;
-    }
-
-    public float[] getInterval() {
-        float[] interval = { Float.parseFloat(start.getText()), Float.parseFloat(end.getText()) };
-
-        return interval;
     }
 
     @Override
@@ -132,7 +117,6 @@ public class RequestPanel extends JPanel implements ActionListener {
             return true;
         return false;
     }
-
     public JLabel getRequestIdLabel() {
         return requestIdLabel;
     }
@@ -140,7 +124,18 @@ public class RequestPanel extends JPanel implements ActionListener {
     public JTextField getUserTextfield() {
         return userTextfield;
     }
+
     public String getAnalyzeType() {
         return (String) analyzeTypeComboBox.getSelectedItem();
+    }
+
+    public JLabel getAddressLabel() {
+        return addressLabel;
+    }
+
+    public float[] getInterval() {
+        float[] interval = { Float.parseFloat(start.getText()), Float.parseFloat(end.getText()) };
+
+        return interval;
     }
 }

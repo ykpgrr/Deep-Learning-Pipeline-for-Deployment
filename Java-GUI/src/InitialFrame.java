@@ -19,7 +19,6 @@ public class InitialFrame extends JFrame implements ActionListener {
     private InitialFrame() {
         setLocation(100, 100);
         setSize(width, height);
-
         setLayout(new BorderLayout());
 
         tabbedPane = new JTabbedPane();

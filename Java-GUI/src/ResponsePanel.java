@@ -2,7 +2,6 @@ import communicationStrategy.Client;
 import communicationStrategy.RequestBuilder;
 import communicationStrategy.Types;
 import org.json.simple.JSONObject;
-
 import javax.swing.*;
 
 public class ResponsePanel extends JPanel {

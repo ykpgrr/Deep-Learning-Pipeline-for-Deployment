@@ -2,7 +2,7 @@ import org.json.simple.JSONObject;
 
 import javax.swing.*;
 
-public class ResponsePanel extends JPanel {
+public class ResponsePanel extends JPanel implements Observer {
     private RequestInfo info;
     private JSONObject response;
 
@@ -14,17 +14,14 @@ public class ResponsePanel extends JPanel {
     }
 
     private void sendRequest(JSONObject request) {
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-                Client client = new Client(request);
-                response = client.sendRequest();
+        JSONObject response = Server.getInstance().sendRequest(request, info.getRequestID());
 
-                JOptionPane.showMessageDialog(null, response.toJSONString());
-            }
-        };
-        Thread thread = new Thread(run);
-        thread.start();
+        // TODO Using response1
+    }
+
+    @Override
+    public void getResponse(JSONObject request) {
+        // TODO Implement GUI with this response JSON
     }
 
     public int getRequestID() {

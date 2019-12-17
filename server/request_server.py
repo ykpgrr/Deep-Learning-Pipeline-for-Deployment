@@ -25,9 +25,12 @@ class RequestServer:
         self.__request_queue = request_queue
 
     def _secret_key_check(self, req):
+        return
+        """
         if not (self.SECRET_KEY_KEY in req.headers) or req.headers.get(self.SECRET_KEY_KEY) != self.SECRET_KEY:
             logger.error(f"The request doesn't have correct SECRET_KEY. requestId:{req.json['requestId']}")
             abort(401, {"requestId": req.json["requestId"], "message": 'authentication failed'})
+        """
 
     def index(self):
         return jsonify({

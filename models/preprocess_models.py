@@ -1,4 +1,5 @@
 import logging
+import time
 
 from models.basemodel import BaseModel
 
@@ -26,6 +27,7 @@ class Preprocess1(BaseModel):
             print(f"running preprocess1 counter: {counter}")
             frame = self.input_queue.get()
             result = self.preprocess(frame)
+            time.sleep(0.2)
             counter = counter + 1
             self.output_queue.put(result)
 

@@ -15,7 +15,7 @@ public class ResponsePanel extends JPanel {
         analyseType = RequestPanel.getInstance().getAnalyzeType();
         source = getSourceType(type);
         requestID = Integer.parseInt(RequestPanel.getInstance().getRequestIdLabel().getText());
-        userID = RequestPanel.getInstance().getUserTextfield().getText();
+        userID = RequestPanel.getInstance().getUserIdTextField().getText();
         ts = (int)System.currentTimeMillis();
         float[] interval = RequestPanel.getInstance().getInterval();
         start = interval[0];

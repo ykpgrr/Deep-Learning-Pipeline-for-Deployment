@@ -27,7 +27,6 @@ public class Client {
 
     public Client(JSONObject request) {
         this.request = request;
-
     }
 
     public JSONObject sendRequest() {

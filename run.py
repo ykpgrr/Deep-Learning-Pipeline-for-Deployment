@@ -42,7 +42,7 @@ def start_pipeline(pipeline_input_queue, pipeline_output_queue):
 
 
 def start_response_server(response_queue):
-    response_server = ResponseManager(url_cs550_post=response_server_config["urlComparison"],
+    response_server = ResponseManager(url_cs550_post=response_server_config["urlCS550"],
                                       secret_key=response_server_config["SECRET_KEY"],
                                       secret_key_key=response_server_config["SECRET_KEY_KEY"],
                                       interval=response_server_config.get_int('messageInterval'),

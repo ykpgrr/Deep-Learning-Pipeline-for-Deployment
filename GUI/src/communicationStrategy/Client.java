@@ -1,10 +1,4 @@
-import org.apache.http.HttpClientConnection;
-import org.apache.http.client.HttpClient;
-import org.apache.http.params.HttpParams;
-import org.apache.http.HttpResponse;
 import org.json.simple.JSONObject;
-import org.apache.http.impl.client.*;
-import org.apache.http.client.methods.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -34,6 +28,7 @@ public class Client {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json; utf-8");
             connection.setRequestProperty("Secret-Key", "0aa43794cd96054e10ecb2df0cf01d0d");
+            connection.setDoInput(true);
             connection.setDoOutput(true);
 
             //request.put("Secret-Key", "0aa43794cd96054e10ecb2df0cf01d0d");
@@ -43,6 +38,7 @@ public class Client {
             byte[] input = jsonInputString.getBytes("utf-8");
             os.write(input, 0, input.length);
 
+            os.flush();
             os.close();
 
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
@@ -57,7 +53,6 @@ public class Client {
             JSONObject responseJSON = (JSONObject) parser.parse(response.toString());
 
             br.close();
-            connection.disconnect();
 
             return responseJSON;
 
@@ -69,9 +64,10 @@ public class Client {
             e.printStackTrace();
         }
 
-        if (connection != null)
-            connection.disconnect();
-
         return null;
+    }
+
+    public HttpURLConnection getConnection() {
+        return connection;
     }
 }

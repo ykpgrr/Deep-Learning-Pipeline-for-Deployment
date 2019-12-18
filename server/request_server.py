@@ -45,7 +45,7 @@ class RequestServer:
                 "message": "Bad Request"
             })
 
-        self._secret_key_check(request)
+        #self._secret_key_check(request)
 
         try:
             cs550_request = Cs550Request.from_dict(request.json)

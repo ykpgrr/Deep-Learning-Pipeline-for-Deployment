@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.awt.*;
 
 public class S3VideoStrategy extends RequestStrategy {
     @Override
@@ -12,6 +14,11 @@ public class S3VideoStrategy extends RequestStrategy {
 
     @Override
     public String getAddress() {
-        return null;
+        String address = JOptionPane.showInputDialog(null, "Enter S3 Video Path");
+
+        if (address == null || address.isEmpty())
+            return null;
+
+        return address;
     }
 }

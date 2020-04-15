@@ -8,3 +8,6 @@ thanks to @esumengen for his contribution on this GUI.
 dependincies maven packages:
 > com.googlecode.json-simple:json-simple:1.1.1
 > org.apache.httpcomponents:httpclient:4.2.3
+
+**Screenshot of GUI:**
+![screenshot](GUI_screenshot.png)
